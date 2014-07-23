@@ -22,3 +22,7 @@ release
 debug
 wrappers/nodejs/build
 .html
+
+
+*.swp
+*.swo

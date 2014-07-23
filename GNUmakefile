@@ -82,7 +82,7 @@ $(info make: variable: NODE_SRCS=$(NODE_SRCS))
 endif
 endif
 
-all: tab $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a $(BUILD_TYPE)/SharedHashFile.node
+all: tab $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a $(BUILD_TYPE)/SharedHashFile.node $(BUILD_TYPE)/SharedHashFile-0.1-py2.7-linux-x86_64.egg
 	@ls -al /dev/shm/ | egrep test | perl -lane 'print $$_; $$any.= $$_; sub END{if(length($$any) > 0){print qq[make: unwanted /dev/shm/test* files detected after testing!]; exit 1}}'
 	@echo "make: note: prefix make with SHF_DEBUG_MAKE=1 to debug this make file"
 	@echo "make: note: prefix make with SHF_PERFORMANCE_TEST_(ENABLE|CPUS|KEYS)=(1|4|10000000) to run perf test"
@@ -133,6 +133,11 @@ else
 	@echo "make: note: !!! node-gyp not found; cannot build nodejs interface; e.g. install via: sudo apt-get install nodejs && sudo apt-get install node-gyp !!!"
 endif
 
+$(BUILD_TYPE)/SharedHashFile-0.1-py2.7-linux-x86_64.egg: $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a 
+	@echo "make: building python wrapper in EGG form: $@"
+	@cd ./wrappers/python/2.x/ && sudo python setup.py bdist_egg
+	@echo "make: copying python egg & test program to $(BUILD_TYPE) build folder"
+	@cp ./wrappers/python/2.x/dist/SharedHashFile-0.1-py2.7-linux-x86_64.egg $(BUILD_TYPE)/.
 debug: all
 
 fixme:

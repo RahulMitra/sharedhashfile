@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: SharedHashFile
+Version: 0.1
+Summary: Module to interact with a SharedHashFile Ipc mechanism.
+Home-page: https://github.com/simonhf/SharedHashFile
+Author: Luke Woydziak
+Author-email: SharedHashFile@woydziak.com
+License: UNKNOWN
+Description: 
+        Module to interact with a SharedHashFile Ipc mechanism.
+        
+Platform: UNKNOWN

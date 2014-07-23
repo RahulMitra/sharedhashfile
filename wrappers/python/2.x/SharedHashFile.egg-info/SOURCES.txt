@@ -1,0 +1,6 @@
+SharedHashFile.cpp
+setup.py
+SharedHashFile.egg-info/PKG-INFO
+SharedHashFile.egg-info/SOURCES.txt
+SharedHashFile.egg-info/dependency_links.txt
+SharedHashFile.egg-info/top_level.txt

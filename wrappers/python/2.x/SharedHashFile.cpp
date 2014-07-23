@@ -344,25 +344,6 @@ SharedHashFile_isAttached(
   return Py_BuildValue("b", attached);
 }
 
-//static v8::Handle<v8::Value> New               (const v8::Arguments& args);
-
-//static v8::Handle<v8::Value> Uid               (const v8::Arguments& args);
-//static v8::Handle<v8::Value> MakeHash          (const v8::Arguments& args);
-//static v8::Handle<v8::Value> DelKeyVal         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> DelUidVal         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> PutKeyVal         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> GetKeyVal         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> GetUidVal         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> DebugGetGarbage   (const v8::Arguments& args);
-//static v8::Handle<v8::Value> DebugVerbosityMore(const v8::Arguments& args);
-//static v8::Handle<v8::Value> SetDataNeedFactor (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QNew              (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QGet              (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QDel              (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QPushHead         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QPullTail         (const v8::Arguments& args);
-//static v8::Handle<v8::Value> QTakeItem         (const v8::Arguments& args);
-
 static PyMethodDef SharedHashFileMethods[] = {
   {"debugVerbosityLess",  SharedHashFile_debugVerbosityLess, METH_VARARGS,
    "Set minimal Debug level."},

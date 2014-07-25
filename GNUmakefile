@@ -110,9 +110,23 @@ $(BUILD_TYPE)/%: $(BUILD_TYPE)/main.%.o $(PROD_OBJS_C) $(PROD_OBJS_CPP)
 	@echo "make: linking: $@"
 	@g++ -o $@ $^
 
+$(BUILD_TYPE)/SharedHashFile-0.1-py2.7-linux-x86_64.egg: $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a 
+	@echo "make: building python wrapper in EGG form: $@"
+	@mkdir ./wrappers/python/2.x/obj_files
+	@cp $(BUILD_TYPE)/*.o ./wrappers/python/2.x/obj_files
+	@cd ./wrappers/python/2.x/ && sudo python setup.py bdist_egg
+	@rm -rf wrappers/python/2.x/obj_files
+	@echo "make: copying python egg & test program to $(BUILD_TYPE) build folder"
+	@cp ./wrappers/python/2.x/dist/SharedHashFile-0.1-py2.7-linux-x86_64.egg $(BUILD_TYPE)/.
+	@echo "installing SharedHashFile using easy_install"
+	@cd $(BUILD_TYPE) && sudo easy_install SharedHashFile-0.1-py2.7-linux-x86_64.egg
+
 $(BUILD_TYPE)/SharedHashFile.node: $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a $(NODE_SRCS)
 	@echo "make: building: $@"
-ifneq ($(findstring node-gyp,$(NODE_GYP)),)
+ifeq ($(findstring node-gyp,$(NODE_GYP)),)
+	@echo "make: installing nodejs and node-gyp"
+	@sudo apt-get install nodejs && sudo apt-get install node-gyp
+else
 	@cd ./wrappers/nodejs && SHF_BUILD_TYPE=$(BUILD_TYPE) NODE_DEBUG=mymod node-gyp --$(BUILD_TYPE) rebuild
 	@echo "make: copying node wrapper & test program to $(BUILD_TYPE) build folder"
 	@cp ./wrappers/nodejs/build/$(BUILD_TYPE_NODE)/SharedHashFile.node $(BUILD_TYPE)/.
@@ -129,15 +143,8 @@ ifneq ($(findstring node-gyp,$(NODE_GYP)),)
 	@echo "make: running test: IPC: SharedHashFile Queue"
 	@cd $(BUILD_TYPE) && cp ../wrappers/nodejs/TestIpcQueue.js .
 	@cd $(BUILD_TYPE) && PATH=$$PATH:. ./test.q.shf.t c2js 2>&1 | perl ../src/verbose-if-fail.pl test.q.shf.t.tout
-else
-	@echo "make: note: !!! node-gyp not found; cannot build nodejs interface; e.g. install via: sudo apt-get install nodejs && sudo apt-get install node-gyp !!!"
 endif
 
-$(BUILD_TYPE)/SharedHashFile-0.1-py2.7-linux-x86_64.egg: $(MAIN_EXES) $(TEST_EXES) $(BUILD_TYPE)/SharedHashFile.a 
-	@echo "make: building python wrapper in EGG form: $@"
-	@cd ./wrappers/python/2.x/ && sudo python setup.py bdist_egg
-	@echo "make: copying python egg & test program to $(BUILD_TYPE) build folder"
-	@cp ./wrappers/python/2.x/dist/SharedHashFile-0.1-py2.7-linux-x86_64.egg $(BUILD_TYPE)/.
 debug: all
 
 fixme:
@@ -150,3 +157,4 @@ tab:
 
 clean:
 	rm -rf release debug wrappers/nodejs/build
+	sudo rm -rf wrappers/python/2.x/build wrappers/python/2.x/dist wrappers/python/2.x/SharedHashFile.egg-info
